@@ -48,7 +48,7 @@
     <body>
         
         
-    <div class="book" data-level="1.2" data-chapter-title="Examples" data-filepath="docs/introduction/Examples.md" data-basepath="../.." data-revision="Tue Apr 26 2016 01:27:06 GMT+0200 (CEST)">
+    <div class="book" data-level="1.2" data-chapter-title="Examples" data-filepath="docs/introduction/Examples.md" data-basepath="../.." data-revision="Mon Oct 17 2016 19:32:06 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -246,7 +246,15 @@
     
         <li class="chapter " data-level="4" data-path="docs/api/index.html">
             
-            <span><b>4.</b> API Reference</span>
+                
+                    <a href="../../docs/api/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        API Reference
+                    </a>
             
             
             <ul class="articles">
@@ -280,14 +288,15 @@
     
         <li class="chapter " data-level="5" data-path="CHANGELOG.html">
             
-            <span><b>5.</b> Change Log</span>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="6" data-path="docs/Feedback.html">
-            
-            <span><b>6.</b> Feedback</span>
+                
+                    <a href="../../CHANGELOG.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        Change Log
+                    </a>
             
             
         </li>
@@ -328,30 +337,30 @@
                         <h1 id="examples">Examples</h1>
 <ol>
 <li><p>Export created types, actions and reducers (eg. in <code>containers/Users/store/index.js</code>)</p>
-<pre><code class="lang-js"> <span class="token keyword">import</span> <span class="token punctuation">{</span>createResource<span class="token punctuation">}</span> from <span class="token string">&apos;redux-rest-resource&apos;</span><span class="token punctuation">;</span>
+<pre><code class="lang-js"> <span class="token keyword">import</span> <span class="token punctuation">{</span>createResource<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;redux-rest-resource&apos;</span><span class="token punctuation">;</span>
 
  <span class="token keyword">const</span> hostUrl <span class="token operator">=</span> <span class="token string">&apos;https://api.mlab.com:443/api/1/databases/sandbox/collections&apos;</span><span class="token punctuation">;</span>
  <span class="token keyword">const</span> apiKey <span class="token operator">=</span> <span class="token string">&apos;xvDjirE9MCIi800xMxi4EKeTm8e9FUBR&apos;</span><span class="token punctuation">;</span>
 
  <span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>types<span class="token punctuation">,</span> actions<span class="token punctuation">,</span> reducers<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">createResource</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
    name<span class="token punctuation">:</span> <span class="token string">&apos;user&apos;</span><span class="token punctuation">,</span>
-   url<span class="token punctuation">:</span> `$<span class="token punctuation">{</span>hostUrl<span class="token punctuation">}</span><span class="token operator">/</span>users<span class="token operator">/</span><span class="token punctuation">:</span>id<span class="token operator">?</span>apiKey<span class="token operator">=</span>$<span class="token punctuation">{</span>apiKey<span class="token punctuation">}</span>`
+   url<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>hostUrl<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/users/:id?apiKey=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>apiKey<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
 </li>
 <li><p>Import reducers in your store</p>
-<pre><code class="lang-js"> <span class="token keyword">import</span> <span class="token punctuation">{</span>combineReducers<span class="token punctuation">}</span> from <span class="token string">&apos;redux&apos;</span><span class="token punctuation">;</span>
- <span class="token keyword">import</span> <span class="token punctuation">{</span>reducers as usersReducers<span class="token punctuation">}</span> from <span class="token string">&apos;containers/Users/store&apos;</span><span class="token punctuation">;</span>
+<pre><code class="lang-js"> <span class="token keyword">import</span> <span class="token punctuation">{</span>combineReducers<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;redux&apos;</span><span class="token punctuation">;</span>
+ <span class="token keyword">import</span> <span class="token punctuation">{</span>reducers <span class="token keyword">as</span> usersReducers<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;containers/Users/store&apos;</span><span class="token punctuation">;</span>
  <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">combineReducers</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
    users<span class="token punctuation">:</span> usersReducers
  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
 </li>
 <li><p>Use provided actions inside connected components</p>
-<pre><code class="lang-js"> <span class="token keyword">import</span> <span class="token punctuation">{</span>bindActionCreators<span class="token punctuation">}</span> from <span class="token string">&apos;redux&apos;</span><span class="token punctuation">;</span>
- <span class="token keyword">import</span> <span class="token punctuation">{</span>connect<span class="token punctuation">}</span> from <span class="token string">&apos;react-redux&apos;</span><span class="token punctuation">;</span>
- <span class="token keyword">import</span> <span class="token punctuation">{</span>actions as userActions<span class="token punctuation">}</span> from <span class="token string">&apos;containers/Users/store&apos;</span><span class="token punctuation">;</span>
- <span class="token keyword">import</span> UserListItem from <span class="token string">&apos;./UserListItem&apos;</span><span class="token punctuation">;</span>
+<pre><code class="lang-js"> <span class="token keyword">import</span> <span class="token punctuation">{</span>bindActionCreators<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;redux&apos;</span><span class="token punctuation">;</span>
+ <span class="token keyword">import</span> <span class="token punctuation">{</span>connect<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;react-redux&apos;</span><span class="token punctuation">;</span>
+ <span class="token keyword">import</span> <span class="token punctuation">{</span>actions <span class="token keyword">as</span> userActions<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;containers/Users/store&apos;</span><span class="token punctuation">;</span>
+ <span class="token keyword">import</span> UserListItem <span class="token keyword">from</span> <span class="token string">&apos;./UserListItem&apos;</span><span class="token punctuation">;</span>
 
  <span class="token keyword">class</span> <span class="token class-name">UserList</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
 

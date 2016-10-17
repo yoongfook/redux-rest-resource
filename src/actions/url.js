@@ -11,12 +11,12 @@ const isObject = object => typeof object === 'object';
  * have to be encoded per http://tools.ietf.org/html/rfc3986
  */
 const encodeUriQuery = (val, pctEncodeSpaces) =>
-  encodeURIComponent(val).
-    replace(/%40/gi, '@').
-    replace(/%3A/gi, ':').
-    replace(/%24/g, '$').
-    replace(/%2C/gi, ',').
-    replace(/%20/g, (pctEncodeSpaces ? '%20' : '+'));
+  encodeURIComponent(val)
+    .replace(/%40/gi, '@')
+    .replace(/%3A/gi, ':')
+    .replace(/%24/g, '$')
+    .replace(/%2C/gi, ',')
+    .replace(/%20/g, (pctEncodeSpaces ? '%20' : '+'));
 
 /**
  * We need our custom method because encodeURIComponent is too aggressive and doesn't follow
@@ -24,10 +24,10 @@ const encodeUriQuery = (val, pctEncodeSpaces) =>
  * (pchar) allowed in path segments
  */
 const encodeUriSegment = val =>
-  encodeUriQuery(val, true).
-    replace(/%26/gi, '&').
-    replace(/%3D/gi, '=').
-    replace(/%2B/gi, '+');
+  encodeUriQuery(val, true)
+    .replace(/%26/gi, '&')
+    .replace(/%3D/gi, '=')
+    .replace(/%2B/gi, '+');
 
 const parseUrlParams = url =>
   url.split(/\W/).reduce((urlParams, param) => {
@@ -40,13 +40,21 @@ const parseUrlParams = url =>
   }, {});
 
 const replaceUrlParamFromUrl = (url, urlParam, replace = '') =>
-  url.replace(new RegExp(`(\/?):${urlParam}(\\W|$)`, 'g'), (match, leadingSlashes, tail) =>
+  url.replace(new RegExp(`(/?):${urlParam}(\\W|$)`, 'g'), (match, leadingSlashes, tail) =>
     (replace || tail.charAt(0) === '/' ? leadingSlashes : '') + replace + tail
   );
 
-const buildFetchUrl = ({url, urlParams, context, stripTrailingSlashes = true}) => {
+const replaceQueryStringParamFromUrl = (url, key, value) => {
+  const re = new RegExp(`([?&])${key}=.*?(&|$)`, 'i');
+  const sep = url.indexOf('?') !== -1 ? '&' : '?';
+  return url.match(re)
+    ? url.replace(re, `$1${key}=${value}$2`)
+    : `${url}${sep}${key}=${value}`;
+};
+
+const buildFetchUrl = ({url, urlParams, context, contextOpts = {query: []}, stripTrailingSlashes = true}) => {
   let protocolAndDomain;
-  let builtUrl = url.replace(PROTOCOL_AND_DOMAIN_REGEX, match => {
+  let builtUrl = url.replace(PROTOCOL_AND_DOMAIN_REGEX, (match) => {
     protocolAndDomain = match;
     return '';
   });
@@ -65,7 +73,11 @@ const buildFetchUrl = ({url, urlParams, context, stripTrailingSlashes = true}) =
   if (stripTrailingSlashes) {
     builtUrl = builtUrl.replace(/\/+$/, '') || '/';
   }
-
+  // Append any querystring options
+  builtUrl = Object.keys(contextOpts.query || []).reduce((wipUrl, queryParam) => {
+    const queryParamValue = contextOpts.query[queryParam];
+    return replaceQueryStringParamFromUrl(wipUrl, queryParam, queryParamValue);
+  }, builtUrl);
   return protocolAndDomain + builtUrl;
 };
 

@@ -48,7 +48,7 @@
     <body>
         
         
-    <div class="book" data-level="2.3" data-chapter-title="Reducers" data-filepath="docs/basics/Reducers.md" data-basepath="../.." data-revision="Tue Apr 26 2016 01:27:06 GMT+0200 (CEST)">
+    <div class="book" data-level="2.3" data-chapter-title="Reducers" data-filepath="docs/basics/Reducers.md" data-basepath="../.." data-revision="Mon Oct 17 2016 19:32:06 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -246,7 +246,15 @@
     
         <li class="chapter " data-level="4" data-path="docs/api/index.html">
             
-            <span><b>4.</b> API Reference</span>
+                
+                    <a href="../../docs/api/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        API Reference
+                    </a>
             
             
             <ul class="articles">
@@ -280,14 +288,15 @@
     
         <li class="chapter " data-level="5" data-path="CHANGELOG.html">
             
-            <span><b>5.</b> Change Log</span>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="6" data-path="docs/Feedback.html">
-            
-            <span><b>6.</b> Feedback</span>
+                
+                    <a href="../../CHANGELOG.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        Change Log
+                    </a>
             
             
         </li>
@@ -331,25 +340,25 @@
 </code></pre>
 <h4 id="exported-store-state">Exported store state</h4>
 <p><strong>Redux REST Resource</strong> will manage the state for you and store related data inside it. You have state-related booleans (like <code>isFetching</code>) that enables smooth UI feedback.</p>
-<pre><code class="lang-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>initialState<span class="token punctuation">}</span> from <span class="token string">&apos;redux-rest-resource&apos;</span><span class="token punctuation">;</span>
+<pre><code class="lang-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>initialState<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;redux-rest-resource&apos;</span><span class="token punctuation">;</span>
 
 initialState <span class="token operator">==</span> <span class="token punctuation">{</span>
   <span class="token comment" spellcheck="true">// FETCH props</span>
   items<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  isFetching<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span>
+  isFetching<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
   lastUpdated<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
-  didInvalidate<span class="token punctuation">:</span> <span class="token keyword">true</span><span class="token punctuation">,</span>
+  didInvalidate<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
   <span class="token comment" spellcheck="true">// GET props</span>
   item<span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
-  isFetchingItem<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span>
+  isFetchingItem<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
   lastUpdatedItem<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
-  didInvalidateItem<span class="token punctuation">:</span> <span class="token keyword">true</span><span class="token punctuation">,</span>
+  didInvalidateItem<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
   <span class="token comment" spellcheck="true">// CREATE props</span>
-  isCreating<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span>
+  isCreating<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
   <span class="token comment" spellcheck="true">// UPDATE props</span>
-  isUpdating<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span>
+  isUpdating<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
   <span class="token comment" spellcheck="true">// DELETE props</span>
-  isDeleting<span class="token punctuation">:</span> <span class="token keyword">false</span>
+  isDeleting<span class="token punctuation">:</span> <span class="token boolean">false</span>
 <span class="token punctuation">}</span><span class="token punctuation">;</span>
 </code></pre>
 

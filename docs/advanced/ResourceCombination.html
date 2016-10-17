@@ -37,6 +37,8 @@
         
     
     
+    <link rel="next" href="../../docs/api/index.html" />
+    
     
     <link rel="prev" href="../../docs/advanced/HeadersOverride.html" />
     
@@ -46,7 +48,7 @@
     <body>
         
         
-    <div class="book" data-level="3.2" data-chapter-title="Resource Combination" data-filepath="docs/advanced/ResourceCombination.md" data-basepath="../.." data-revision="Tue Apr 26 2016 01:27:06 GMT+0200 (CEST)">
+    <div class="book" data-level="3.2" data-chapter-title="Resource Combination" data-filepath="docs/advanced/ResourceCombination.md" data-basepath="../.." data-revision="Mon Oct 17 2016 19:32:06 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -244,7 +246,15 @@
     
         <li class="chapter " data-level="4" data-path="docs/api/index.html">
             
-            <span><b>4.</b> API Reference</span>
+                
+                    <a href="../../docs/api/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        API Reference
+                    </a>
             
             
             <ul class="articles">
@@ -278,14 +288,15 @@
     
         <li class="chapter " data-level="5" data-path="CHANGELOG.html">
             
-            <span><b>5.</b> Change Log</span>
-            
-            
-        </li>
-    
-        <li class="chapter " data-level="6" data-path="docs/Feedback.html">
-            
-            <span><b>6.</b> Feedback</span>
+                
+                    <a href="../../CHANGELOG.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        Change Log
+                    </a>
             
             
         </li>
@@ -325,18 +336,18 @@
                     
                         <h1 id="resource-combination">Resource Combination</h1>
 <p>You can easily combine multiple resources together. For instance, if you want to use children resources attached to a parent store node:</p>
-<pre><code class="lang-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>createResource<span class="token punctuation">}</span> from <span class="token string">&apos;redux-rest-resource&apos;</span><span class="token punctuation">;</span>
+<pre><code class="lang-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>createResource<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;redux-rest-resource&apos;</span><span class="token punctuation">;</span>
 <span class="token keyword">const</span> hostUrl <span class="token operator">=</span> <span class="token string">&apos;http://localhost:3000&apos;</span><span class="token punctuation">;</span>
 <span class="token comment" spellcheck="true">// Parent Library Store</span>
 <span class="token keyword">const</span> libraryResource <span class="token operator">=</span> <span class="token function">createResource</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
   name<span class="token punctuation">:</span> <span class="token string">&apos;library&apos;</span><span class="token punctuation">,</span>
   pluralName<span class="token punctuation">:</span> <span class="token string">&apos;libraries&apos;</span><span class="token punctuation">,</span>
-  url<span class="token punctuation">:</span> `$<span class="token punctuation">{</span>hostUrl<span class="token punctuation">}</span><span class="token operator">/</span>libraries<span class="token operator">/</span><span class="token punctuation">:</span>id`
+  url<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>hostUrl<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/libraries/:id`</span></span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token comment" spellcheck="true">// Children Library Asset Store</span>
 <span class="token keyword">const</span> libraryAssetResource <span class="token operator">=</span> <span class="token function">createResource</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
   name<span class="token punctuation">:</span> <span class="token string">&apos;libraryAsset&apos;</span><span class="token punctuation">,</span>
-  url<span class="token punctuation">:</span> `$<span class="token punctuation">{</span>hostUrl<span class="token punctuation">}</span><span class="token operator">/</span>libraries<span class="token operator">/</span><span class="token punctuation">:</span>libraryId<span class="token operator">/</span>assets<span class="token operator">/</span><span class="token punctuation">:</span>id`
+  url<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>hostUrl<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/libraries/:libraryId/assets/:id`</span></span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
 <p>Exported <code>types</code> and <code>actions</code> do expose unique keys that enables quick and easy merging.</p>
@@ -344,7 +355,7 @@
 <span class="token keyword">const</span> actions <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>libraryResource<span class="token punctuation">.</span>actions<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>libraryAssetResource<span class="token punctuation">.</span>actions<span class="token punctuation">}</span><span class="token punctuation">;</span>
 </code></pre>
 <p>Reducers do require extra care:</p>
-<pre><code class="lang-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>mergeReducers<span class="token punctuation">}</span> from <span class="token string">&apos;redux-rest-resource&apos;</span><span class="token punctuation">;</span>
+<pre><code class="lang-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>mergeReducers<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;redux-rest-resource&apos;</span><span class="token punctuation">;</span>
 <span class="token keyword">const</span> reducers <span class="token operator">=</span> <span class="token function">mergeReducers</span><span class="token punctuation">(</span>libraryResource<span class="token punctuation">.</span>reducers<span class="token punctuation">,</span> <span class="token punctuation">{</span>assets<span class="token punctuation">:</span> libraryAssetResource<span class="token punctuation">.</span>reducers<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
 <p>Finally export an unified resource:</p>
@@ -360,8 +371,10 @@
         </div>
 
         
-        <a href="../../docs/advanced/HeadersOverride.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Headers Override"><i class="fa fa-angle-left"></i></a>
+        <a href="../../docs/advanced/HeadersOverride.html" class="navigation navigation-prev " aria-label="Previous page: Headers Override"><i class="fa fa-angle-left"></i></a>
         
+        
+        <a href="../../docs/api/index.html" class="navigation navigation-next " aria-label="Next page: API Reference"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

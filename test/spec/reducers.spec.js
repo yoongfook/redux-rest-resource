@@ -1,4 +1,5 @@
 import expect from 'expect';
+import {combineReducers} from '../../src';
 import {createTypes, getActionKey} from '../../src/types';
 import {createReducers, initialState} from '../../src/reducers';
 import {defaultActions} from '../../src/defaults';
@@ -22,8 +23,8 @@ describe('createReducers', () => {
   it('should return the initial state', () => {
     const types = createTypes({name, actions: defaultActions});
     const reducers = createReducers({name, types});
-    expect(reducers(undefined, {})).
-      toEqual(initialState);
+    expect(reducers(undefined, {}))
+      .toEqual(initialState);
   });
 });
 
@@ -120,6 +121,32 @@ describe('createReducers', () => {
     expect(reducers(pendingState, {type, status, context, err: {}, receivedAt}))
       .toEqual({...customInitialState, isUpdating: false});
   });
+  it('should handle UPDATE with option `assignResponse`', () => {
+    const actionKey = 'update';
+    const actionOpts = {...defaultActions[actionKey], assignResponse: true};
+    const customReducers = createReducers({name, actions: actionOpts, types});
+    const type = types[getActionKey({name, actionKey, actionOpts})];
+    const initialItems = [{id: 1, firstName: 'Olivier', lastName: 'Louvignes'}];
+    const customInitialState = {...initialState, items: initialItems};
+    const context = {id: 1, firstName: 'Olivia'};
+    let status;
+
+    status = 'pending';
+    const pendingState = customReducers(customInitialState, {type, status, context, options: actionOpts});
+    expect(pendingState)
+      .toEqual({...customInitialState, isUpdating: true});
+
+    status = 'resolved';
+    const body = {id: 1, firstName: 'Olivia2'};
+    const receivedAt = Date.now();
+    const expectedItems = [{id: 1, firstName: 'Olivia2', lastName: 'Louvignes'}];
+    expect(customReducers(pendingState, {type, status, context, options: actionOpts, body, receivedAt}))
+      .toEqual({...customInitialState, isUpdating: false, items: expectedItems});
+
+    status = 'rejected';
+    expect(customReducers(pendingState, {type, status, context, options: actionOpts, err: {}, receivedAt}))
+      .toEqual({...customInitialState, isUpdating: false});
+  });
   it('should handle DELETE action', () => {
     const actionKey = 'delete';
     const actionOpts = defaultActions[actionKey];
@@ -144,5 +171,26 @@ describe('createReducers', () => {
     status = 'rejected';
     expect(reducers(pendingState, {type, status, context, err: {}, receivedAt}))
       .toEqual({...customInitialState, isDeleting: false});
+  });
+});
+
+describe('combineReducers', () => {
+  it('should properly combine two reducer functions as a single object', () => {
+    const fooTypes = createTypes({name: 'foo', actions: defaultActions});
+    const fooReducers = createReducers({name: 'foo', fooTypes});
+    const barTypes = createTypes({name: 'bar', actions: defaultActions});
+    const barReducers = createReducers({name: 'bar', barTypes});
+    const combinedReducers = combineReducers({foo: fooReducers, bar: barReducers});
+    expect(combinedReducers).toBeA('function');
+    expect(combinedReducers({}, {type: 'foo'})).toIncludeKeys(['foo', 'bar']);
+  });
+  it('should properly combine two reducer functions as two objects', () => {
+    const fooTypes = createTypes({name: 'foo', actions: defaultActions});
+    const fooReducers = createReducers({name: 'foo', fooTypes});
+    const barTypes = createTypes({name: 'bar', actions: defaultActions});
+    const barReducers = createReducers({name: 'bar', barTypes});
+    const combinedReducers = combineReducers({foo: fooReducers}, {bar: barReducers});
+    expect(combinedReducers).toBeA('function');
+    expect(combinedReducers({}, {type: 'foo'})).toIncludeKeys(['foo', 'bar']);
   });
 });

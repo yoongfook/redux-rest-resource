@@ -88,9 +88,12 @@ const createReducers = ({name}) => (state = {...initialState, name}, action) => 
             isUpdating: true
           });
         case 'resolved': {
-          // Assign returned object
-          const index = state.items.findIndex(el => el.id === action.context.id);
-          const updatedItem = {...state.items.splice(index, 1)[0], ...action.context};
+          // Assign context or returned object
+          const id = action.context.id || action.context;
+          const index = state.items.findIndex(el => el.id === id);
+          const actionOpts = action.options || {};
+          const update = actionOpts.assignResponse ? action.body : action.context;
+          const updatedItem = {...state.items.splice(index, 1)[0], ...update};
           return {...state,
             isUpdating: false,
             items: [...state.items, updatedItem]
@@ -110,10 +113,11 @@ const createReducers = ({name}) => (state = {...initialState, name}, action) => 
           return {...state,
             isDeleting: true
           };
-        case 'resolved':
+        case 'resolved': // eslint-disable-line
+          const id = action.context.id || action.context;
           return {...state,
             isDeleting: false,
-            items: [...state.items.filter(el => el.id !== action.context.id)]
+            items: [...state.items.filter(el => el.id !== id)]
           };
         case 'rejected':
           return {...state,

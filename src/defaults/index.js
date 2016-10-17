@@ -1,10 +1,10 @@
 
 const defaultActions = {
-  create: {method: 'post', alias: 'save'},
-  fetch: {method: 'get', isArray: true},
-  get: {method: 'get'},
-  update: {method: 'patch'},
-  delete: {method: 'delete'}
+  create: {method: 'POST', alias: 'save'},
+  fetch: {method: 'GET', isArray: true},
+  get: {method: 'GET'},
+  update: {method: 'PATCH'},
+  delete: {method: 'DELETE'}
 };
 
 const defaultHeaders = {
@@ -13,7 +13,7 @@ const defaultHeaders = {
 };
 
 const defaultTransformResponsePipeline = [
-  res => res.json()
+  res => res.json().then(body => ({body, code: res.status}))
 ];
 
 const initialState = {
