@@ -48,7 +48,7 @@
     <body>
         
         
-    <div class="book" data-level="1.2" data-chapter-title="Examples" data-filepath="docs/introduction/Examples.md" data-basepath="../.." data-revision="Tue Oct 18 2016 11:02:39 GMT+0200 (CEST)">
+    <div class="book" data-level="1.2" data-chapter-title="Examples" data-filepath="docs/introduction/Examples.md" data-basepath="../.." data-revision="Tue Oct 18 2016 11:06:41 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -351,7 +351,7 @@
                     
                         <h1 id="examples">Examples</h1>
 <ol>
-<li><p>Export created types, actions and reducers (eg. in <code>containers/Users/store/index.js</code>)</p>
+<li><p>First, create your resource and export created types, actions and reducers (eg. in <code>containers/Users/store/index.js</code>)</p>
 <pre><code class="lang-js"> <span class="token keyword">import</span> <span class="token punctuation">{</span>createResource<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;redux-rest-resource&apos;</span><span class="token punctuation">;</span>
 
  <span class="token keyword">const</span> hostUrl <span class="token operator">=</span> <span class="token string">&apos;https://api.mlab.com:443/api/1/databases/sandbox/collections&apos;</span><span class="token punctuation">;</span>
@@ -397,7 +397,7 @@
 
  <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">connect</span><span class="token punctuation">(</span>
    <span class="token comment" spellcheck="true">// mapStateToProps</span>
-   state <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">(</span><span class="token punctuation">{</span>users<span class="token punctuation">:</span> state<span class="token punctuation">.</span>users<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+   state <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">(</span><span class="token punctuation">{</span>users<span class="token punctuation">:</span> state<span class="token punctuation">.</span>users<span class="token punctuation">.</span>items<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
    <span class="token comment" spellcheck="true">// mapDispatchToProps</span>
    dispatch <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
      actions<span class="token punctuation">:</span> <span class="token function">bindActionCreators</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>userActions<span class="token punctuation">}</span><span class="token punctuation">,</span> dispatch<span class="token punctuation">)</span>
