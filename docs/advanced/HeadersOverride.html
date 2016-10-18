@@ -37,7 +37,7 @@
         
     
     
-    <link rel="next" href="../../docs/advanced/ResourceCombination.html" />
+    <link rel="next" href="../../docs/advanced/AssignUpdateResponse.html" />
     
     
     <link rel="prev" href="../../docs/advanced/index.html" />
@@ -48,7 +48,7 @@
     <body>
         
         
-    <div class="book" data-level="3.1" data-chapter-title="Headers Override" data-filepath="docs/advanced/HeadersOverride.md" data-basepath="../.." data-revision="Tue Oct 18 2016 11:01:31 GMT+0200 (CEST)">
+    <div class="book" data-level="3.1" data-chapter-title="Headers Override" data-filepath="docs/advanced/HeadersOverride.md" data-basepath="../.." data-revision="Tue Oct 18 2016 11:02:39 GMT+0200 (CEST)">
     
 
 <div class="book-summary">
@@ -224,14 +224,29 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2" data-path="docs/advanced/ResourceCombination.html">
+        <li class="chapter " data-level="3.2" data-path="docs/advanced/AssignUpdateResponse.html">
+            
+                
+                    <a href="../../docs/advanced/AssignUpdateResponse.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.2.</b>
+                        
+                        Assign Update Response
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="docs/advanced/ResourceCombination.html">
             
                 
                     <a href="../../docs/advanced/ResourceCombination.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>3.2.</b>
+                            <b>3.3.</b>
                         
                         Resource Combination
                     </a>
@@ -335,9 +350,7 @@
                     <section class="normal" id="section-">
                     
                         <h1 id="headers-override">Headers Override</h1>
-<ul>
-<li>You can add/override headers for a single action</li>
-</ul>
+<p>You can add/override headers for a single action</p>
 <pre><code class="lang-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>createResource<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;redux-rest-resource&apos;</span><span class="token punctuation">;</span>
 
 <span class="token keyword">const</span> hostUrl <span class="token operator">=</span> <span class="token string">&apos;https://api.mlab.com:443/api/1/databases/sandbox/collections&apos;</span><span class="token punctuation">;</span>
@@ -355,9 +368,7 @@
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
-<ul>
-<li>Or globally for all actions</li>
-</ul>
+<p>Or globally for all actions</p>
 <pre><code class="lang-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>defaultHeaders<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;redux-rest-resource&apos;</span><span class="token punctuation">;</span>
 <span class="token keyword">const</span> jwt <span class="token operator">=</span> <span class="token string">&apos;xvDjirE9MCIi800xMxi4EKeTm8e9FUBR&apos;</span><span class="token punctuation">;</span>
 Object<span class="token punctuation">.</span><span class="token function">assign</span><span class="token punctuation">(</span>defaultHeaders<span class="token punctuation">,</span> <span class="token punctuation">{</span>Authorization<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`Bearer </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>jwt<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -375,7 +386,7 @@ Object<span class="token punctuation">.</span><span class="token function">assig
         <a href="../../docs/advanced/index.html" class="navigation navigation-prev " aria-label="Previous page: Advanced"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../../docs/advanced/ResourceCombination.html" class="navigation navigation-next " aria-label="Next page: Resource Combination"><i class="fa fa-angle-right"></i></a>
+        <a href="../../docs/advanced/AssignUpdateResponse.html" class="navigation navigation-next " aria-label="Next page: Assign Update Response"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
