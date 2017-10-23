@@ -1,28 +1,36 @@
+import {mapObject, getPluralName, upperSnakeCase} from './helpers/util';
 
-const upperSnakeCase = string =>
-  String(string.split('').reduce((soFar, letter, index) => {
-    const charCode = letter.charCodeAt(0);
-    return soFar + (index && charCode < 97 ? `_${letter}` : letter).toUpperCase();
-  }, ''));
+const scopeType = (scope, type) => (scope ? `${scope}/${type}` : type);
 
-const getNamespace = ({name}) =>
-  `@@resource/${upperSnakeCase(name)}`;
+const scopeTypes = (scope, types = {}) => mapObject(types, scopeType.bind(null, scope));
 
-const getActionKey = ({name, pluralName, actionKey, actionOpts = {}}) => {
-  // `${actionKey.toUpperCase()}`;
-  const actualPluralName = pluralName || `${name}s`;
-  return `${actionKey.toUpperCase()}_${upperSnakeCase(actionOpts.isArray ? actualPluralName : name)}`;
+const getTypesScope = resourceName => (
+  resourceName
+    ? `@@resource/${upperSnakeCase(resourceName)}`
+    : ''
+);
+
+const getActionTypeKey = (actionId, {resourceName, resourcePluralName = getPluralName(resourceName), isArray = false} = {}) => (
+  resourceName
+    ? `${actionId.toUpperCase()}_${upperSnakeCase(isArray ? resourcePluralName : resourceName)}`
+    : upperSnakeCase(actionId)
+);
+
+const getActionType = actionId => (
+  upperSnakeCase(actionId)
+);
+
+const createType = (actionId, {resourceName, resourcePluralName, isArray = false}) => {
+  const typeKey = getActionTypeKey(actionId, {resourceName, resourcePluralName, isArray});
+  return {[typeKey]: getActionType(actionId)};
 };
 
-const getActionType = ({name, actionKey}) =>
-  // `${actionKey.toUpperCase()}_${name.toUpperCase()}${action.isArray ? 'S' : ''}`;
-  `${getNamespace({name})}/${actionKey.toUpperCase()}`;
-
-const createTypes = ({name, actions}) =>
-  Object.keys(actions).reduce((types, actionKey) => {
-    const actionOpts = actions[actionKey];
-    const type = getActionType({name, actionOpts, actionKey});
-    return Object.assign(types, {[getActionKey({name, actionOpts, actionKey})]: type});
+const createTypes = (actions = {}, {resourceName, resourcePluralName, scope = getTypesScope(resourceName)} = {}) => {
+  const rawTypes = Object.keys(actions).reduce((types, actionId) => {
+    const actionOpts = actions[actionId];
+    return Object.assign(types, createType(actionId, {resourceName, resourcePluralName, isArray: actionOpts.isArray}));
   }, {});
+  return scopeTypes(scope, rawTypes);
+};
 
-export {createTypes, getNamespace, getActionKey, getActionType};
+export {getTypesScope, createType, createTypes, getActionType, getActionTypeKey};

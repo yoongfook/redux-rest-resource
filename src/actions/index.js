@@ -1,80 +1,89 @@
 // @inspiration https://github.com/angular/angular.js/blob/master/src/ngResource/resource.js
 
-import fetch from 'isomorphic-fetch';
 import {getActionType} from './../types';
 import {applyTransformPipeline, buildTransformPipeline} from './transform';
-import {parseUrlParams, buildFetchUrl} from './url';
+import {parseUrlParams} from './../helpers/url';
+import fetch, {buildFetchUrl, buildFetchOpts} from './../helpers/fetch';
+import {isFunction, pick, ucfirst, getPluralName} from './../helpers/util';
+import {defaultTransformResponsePipeline} from './../defaults';
 
-import {defaultHeaders, defaultTransformResponsePipeline} from './../defaults';
-// const d = ::console.info;
+const SUPPORTED_FETCH_OPTS = ['url', 'method', 'headers', 'credentials', 'query', 'body'];
+const SUPPORTED_REDUCE_OPTS = ['assignResponse', 'isArray'];
 
-const includes = (array, key) =>
-  array.indexOf(key) !== -1;
-
-const pick = (obj, ...keys) =>
-  keys.reduce((soFar, key) => {
-    if (includes(keys, key) && obj[key]) {
-      soFar[key] = obj[key]; // eslint-disable-line no-param-reassign
-    }
-    return soFar;
-  }, {});
-
-const ucfirst = str =>
-  str.charAt(0).toUpperCase() + str.substr(1);
-
-const getActionName = ({name, pluralName, actionKey, actionOpts = {}}) => {
-  const actualPluralName = pluralName || `${name}s`;
-  return `${actionKey}${ucfirst(actionOpts.isArray ? actualPluralName : name)}`;
-};
-
-const buildFetchOpts = ({context, actionOpts}) => {
-  const opts = {
-    headers: defaultHeaders
-  };
-  if (actionOpts.method) {
-    opts.method = actionOpts.method;
-  }
-  if (actionOpts.headers) {
-    opts.headers = {...opts.headers, ...actionOpts.headers};
-  }
-  if (actionOpts.credentials) {
-    opts.credentials = actionOpts.credentials;
-  }
-  const hasBody = /^(POST|PUT|PATCH)$/i.test(opts.method);
-  if (context && hasBody) {
-    opts.body = JSON.stringify(context);
-  }
-  return opts;
-};
-
-const isSuccess = status => status >= 200 && status < 300;
-
-const createActions = ({name, pluralName, url: defaultUrl, actions = {}, credentials}) => (
-  Object.keys(actions).reduce((actionFuncs, actionKey) => {
-    const action = actions[actionKey];
-    const actionOpts = {...actions[actionKey], credentials};
-    const reducerOpts = pick(actionOpts, 'assignResponse');
-    const type = getActionType({name, action, actionKey});
-    const url = action.url || defaultUrl;
-    const urlParams = parseUrlParams(url);
-    // Compute actual function name
-    const actionName = getActionName({name, pluralName, actionKey, actionOpts});
-    // Actual action function
-    const actionFunc = (context, contextOpts = {}) => (dispatch) => {
-      // First dispatch a pending action
-      dispatch({type, status: 'pending', context});
-      const fetchUrl = buildFetchUrl({url, urlParams, context, contextOpts});
-      const fetchOptions = buildFetchOpts({context, contextOpts, actionOpts});
-      // d(`${name}Actions.${actionName}()`, fetchUrl, fetchOptions);
-      let statusCode;
-      return fetch(fetchUrl, fetchOptions)
-        .then((res) => { statusCode = res.status; return res; })
-        .then(applyTransformPipeline(buildTransformPipeline(defaultTransformResponsePipeline, actionOpts.transformResponse)))
-        .then(payload => dispatch({type, status: isSuccess(statusCode) ? 'resolved' : 'rejected', context, options: reducerOpts, receivedAt: Date.now(), ...payload}))
-        .catch(err => dispatch({type, status: 'rejected', context, options: reducerOpts, err, receivedAt: Date.now()}));
-    };
-    return {...actionFuncs, [actionName]: actionFunc};
-  }, {})
+const getActionName = (actionId, {resourceName, resourcePluralName = getPluralName(resourceName), isArray = false} = {}) => (
+  !resourceName
+    ? actionId
+    : `${actionId}${ucfirst(isArray ? resourcePluralName : resourceName)}`
 );
+
+const createAction = (actionId, {resourceName, resourcePluralName = getPluralName(resourceName), ...actionOpts}) => {
+  const type = getActionType(actionId);
+  // Actual action function with two args
+  // Context usage changes with resolved method:
+  // - GET/DELETE will be used to resolve query params (eg. /users/:id)
+  // - POST/PATCH will be used to resolve query params (eg. /users/:id) and as request body
+  return (context, contextOpts = {}) => (dispatch, getState) => {
+    // First dispatch a pending action
+    dispatch({type, status: 'pending', context});
+    // Prepare fetch options
+    const fetchOpts = {
+      ...pick(actionOpts, ...SUPPORTED_FETCH_OPTS),
+      ...pick(contextOpts, ...SUPPORTED_FETCH_OPTS)
+    };
+    // Support dynamic fetch options
+    const resolvedfetchOpts = Object.keys(fetchOpts).reduce((soFar, key) => {
+      soFar[key] = isFunction(fetchOpts[key]) ? fetchOpts[key](getState, {actionId}) : fetchOpts[key];
+      return soFar;
+    }, {});
+    const {url, ...eligibleFetchOptions} = resolvedfetchOpts;
+    // Build fetch url and options
+    const urlParams = parseUrlParams(url);
+    const finalFetchUrl = buildFetchUrl(context, {url, urlParams});
+    const finalFetchOpts = buildFetchOpts(context, eligibleFetchOptions);
+    // Prepare reduce options
+    const reduceOpts = {
+      ...pick(actionOpts, ...SUPPORTED_REDUCE_OPTS),
+      ...pick(contextOpts, ...SUPPORTED_REDUCE_OPTS)
+    };
+    return fetch(finalFetchUrl, finalFetchOpts)
+      .then(applyTransformPipeline(buildTransformPipeline(defaultTransformResponsePipeline, actionOpts.transformResponse)))
+      .then(payload => dispatch({type, status: 'resolved', context, options: reduceOpts, receivedAt: Date.now(), ...payload}))
+      .catch((err) => {
+        // Catch HttpErrors
+        if (err.statusCode) {
+          dispatch({
+            type,
+            status: 'rejected',
+            code: err.statusCode,
+            body: err.body,
+            context,
+            options: reduceOpts,
+            receivedAt: Date.now()
+          });
+        // Catch regular Errors
+        } else {
+          dispatch({
+            type,
+            status: 'rejected',
+            err,
+            context,
+            options: reduceOpts,
+            receivedAt: Date.now()
+          });
+        }
+        throw err;
+      });
+  };
+};
+
+const createActions = (actions = {}, {resourceName, resourcePluralName, ...globalOpts} = {}) => {
+  const actionKeys = Object.keys(actions);
+  return actionKeys.reduce((actionFuncs, actionId) => {
+    const actionOpts = {...globalOpts, ...actions[actionId]};
+    const actionName = getActionName(actionId, {resourceName, resourcePluralName, isArray: actionOpts.isArray});
+    actionFuncs[actionName] = createAction(actionId, {resourceName, resourcePluralName, ...actionOpts});
+    return actionFuncs;
+  }, {});
+};
 
 export {getActionName, createActions};
