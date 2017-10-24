@@ -1,7 +1,7 @@
 {
   "name": "redux-rest-resource",
   "description": "Generates types, actions and reducers for you to easily interact with any REST API.",
-  "version": "0.13.3",
+  "version": "0.14.0",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
   "author": "Olivier Louvignes <olivier@mg-crea.com>",
@@ -17,8 +17,8 @@
     "compile:watch": "npm run compile -- -w",
     "docs": "gitbook serve",
     "docs:prepare": "gitbook install",
-    "docs:build": "gitbook build -g mgcrea/${npm_package_name}",
-    "docs:publish": "rimraf _book; npm run docs:build && gh-pages -d _book",
+    "docs:compile": "gitbook build -g mgcrea/${npm_package_name}",
+    "docs:publish": "rimraf _book; npm run docs:compile && gh-pages -d _book",
     "prepublish": "npm run compile"
   },
   "devDependencies": {

@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Basics · Redux</title>
+        <title>Actions · Redux</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="Resources.html" />
+    <link rel="next" href="../advanced/" />
     
     
-    <link rel="prev" href="../usage/Quickstart.html" />
+    <link rel="prev" href="./" />
     
 
     </head>
@@ -136,9 +136,9 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.3" data-path="./">
+        <li class="chapter " data-level="1.3" data-path="../basics/">
             
-                <a href="./">
+                <a href="../basics/">
             
                     
                     Basics
@@ -150,9 +150,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.3.1" data-path="Resources.html">
+        <li class="chapter " data-level="1.3.1" data-path="../basics/Resources.html">
             
-                <a href="Resources.html">
+                <a href="../basics/Resources.html">
             
                     
                     Resources
@@ -163,9 +163,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.2" data-path="Actions.html">
+        <li class="chapter " data-level="1.3.2" data-path="../basics/Actions.html">
             
-                <a href="Actions.html">
+                <a href="../basics/Actions.html">
             
                     
                     Actions
@@ -176,9 +176,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.3" data-path="Reducers.html">
+        <li class="chapter " data-level="1.3.3" data-path="../basics/Reducers.html">
             
-                <a href="Reducers.html">
+                <a href="../basics/Reducers.html">
             
                     
                     Reducers
@@ -189,9 +189,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.4" data-path="Types.html">
+        <li class="chapter " data-level="1.3.4" data-path="../basics/Types.html">
             
-                <a href="Types.html">
+                <a href="../basics/Types.html">
             
                     
                     Types
@@ -207,9 +207,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="../examples/">
+        <li class="chapter " data-level="1.4" data-path="./">
             
-                <a href="../examples/">
+                <a href="./">
             
                     
                     Examples
@@ -221,9 +221,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.4.1" data-path="../examples/ActionsExamples.html">
+        <li class="chapter active" data-level="1.4.1" data-path="ActionsExamples.html">
             
-                <a href="../examples/ActionsExamples.html">
+                <a href="ActionsExamples.html">
             
                     
                     Actions
@@ -437,7 +437,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../.." >Basics</a>
+        <a href="../.." >Actions</a>
     </h1>
 </div>
 
@@ -452,13 +452,53 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="basics">Basics</h1>
+                                <h1 id="actions-examples">Actions Examples</h1>
 <ul>
-<li><a href="Resources.html">Resources</a></li>
-<li><a href="Actions.html">Actions</a></li>
-<li><a href="Reducers.html">Reducers</a></li>
-<li><a href="Types.html">Types</a></li>
+<li><code>create</code>:</li>
 </ul>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> createBody <span class="token operator">=</span> <span class="token punctuation">{</span>firstName<span class="token punctuation">:</span> <span class="token string">&apos;Olivier&apos;</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> actionOpts <span class="token operator">=</span> <span class="token punctuation">{</span>query<span class="token punctuation">:</span> <span class="token punctuation">{</span>foo<span class="token punctuation">:</span> <span class="token string">&apos;bar&apos;</span><span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+actions<span class="token punctuation">.</span><span class="token function">createUser</span><span class="token punctuation">(</span>createBody<span class="token punctuation">,</span> actionOpts<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// Will POST `createBody` to localhost:9000/api/users?foo=bar</span>
+</code></pre>
+<ul>
+<li><code>fetch</code>:</li>
+</ul>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> actionOpts <span class="token operator">=</span> <span class="token punctuation">{</span>query<span class="token punctuation">:</span> <span class="token punctuation">{</span>foo<span class="token punctuation">:</span> <span class="token string">&apos;bar&apos;</span><span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> fetchContext <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// fetchContext could be used as an object to resolve extra url parameters (eg. localhost:9000/api/:version/users/:id)</span>
+actions<span class="token punctuation">.</span><span class="token function">fetchUsers</span><span class="token punctuation">(</span>fetchContext<span class="token punctuation">,</span> actionOpts<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// Will GET localhost:9000/api/users?foo=bar</span>
+</code></pre>
+<ul>
+<li><code>update</code>:</li>
+</ul>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> updateBody <span class="token operator">=</span> <span class="token punctuation">{</span>id<span class="token punctuation">:</span> <span class="token string">&apos;5925b7f7d9808600076ce557&apos;</span><span class="token punctuation">,</span> firstName<span class="token punctuation">:</span> <span class="token string">&apos;Olivia&apos;</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> actionOpts <span class="token operator">=</span> <span class="token punctuation">{</span>query<span class="token punctuation">:</span> <span class="token punctuation">{</span>foo<span class="token punctuation">:</span> <span class="token string">&apos;bar&apos;</span><span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+actions<span class="token punctuation">.</span><span class="token function">updateUser</span><span class="token punctuation">(</span>updateBody<span class="token punctuation">,</span> actionOpts<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// Will PATCH updateBody to localhost:9000/api/users/5925b7f7d9808600076ce557?foo=bar</span>
+</code></pre>
+<ul>
+<li><code>get</code>:</li>
+</ul>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> getContext <span class="token operator">=</span> <span class="token punctuation">{</span>id<span class="token punctuation">:</span> <span class="token string">&apos;5925b7f7d9808600076ce557&apos;</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// const getContext = &apos;5925b7f7d9808600076ce557&apos; would also work</span>
+<span class="token keyword">const</span> actionOpts <span class="token operator">=</span> <span class="token punctuation">{</span>query<span class="token punctuation">:</span> <span class="token punctuation">{</span>foo<span class="token punctuation">:</span> <span class="token string">&apos;bar&apos;</span><span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+actions<span class="token punctuation">.</span><span class="token function">getUser</span><span class="token punctuation">(</span>getContext<span class="token punctuation">,</span> actionOpts<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// Will GET localhost:9000/api/users/5925b7f7d9808600076ce557?foo=bar</span>
+</code></pre>
+<ul>
+<li><code>delete</code>:</li>
+</ul>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> deleteContext <span class="token operator">=</span> <span class="token punctuation">{</span>id<span class="token punctuation">:</span> <span class="token string">&apos;5925b7f7d9808600076ce557&apos;</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// const deleteContext = &apos;5925b7f7d9808600076ce557&apos; would also work</span>
+<span class="token keyword">const</span> actionOpts <span class="token operator">=</span> <span class="token punctuation">{</span>query<span class="token punctuation">:</span> <span class="token punctuation">{</span>foo<span class="token punctuation">:</span> <span class="token string">&apos;bar&apos;</span><span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+actions<span class="token punctuation">.</span><span class="token function">deleteUser</span><span class="token punctuation">(</span>getContext<span class="token punctuation">,</span> actionOpts<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// Will DELETE localhost:9000/api/users/5925b7f7d9808600076ce557?foo=bar</span>
+</code></pre>
+<blockquote>
+<p>For the list of <a href="../basics/Actions.html#available-options">all available options</a></p>
+</blockquote>
 
                                 
                                 </section>
@@ -486,12 +526,12 @@
 
             
                 
-                <a href="../usage/Quickstart.html" class="navigation navigation-prev " aria-label="Previous page: Quickstart">
+                <a href="./" class="navigation navigation-prev " aria-label="Previous page: Examples">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="Resources.html" class="navigation navigation-next " aria-label="Next page: Resources">
+                <a href="../advanced/" class="navigation navigation-next " aria-label="Next page: Advanced">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -502,7 +542,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Basics","level":"1.3","depth":1,"next":{"title":"Resources","level":"1.3.1","depth":2,"path":"docs/basics/Resources.md","ref":"docs/basics/Resources.md","articles":[]},"previous":{"title":"Quickstart","level":"1.2.1","depth":2,"path":"docs/usage/Quickstart.md","ref":"docs/usage/Quickstart.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/mgcrea/redux-rest-resource/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/mgcrea/redux-rest-resource/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Redux","gitbook":"3.2.2"},"file":{"path":"docs/basics/README.md","mtime":"2017-10-24T09:42:12.873Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-10-24T09:55:10.246Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Actions","level":"1.4.1","depth":2,"next":{"title":"Advanced","level":"1.5","depth":1,"path":"docs/advanced/README.md","ref":"docs/advanced/README.md","articles":[{"title":"Custom Actions","level":"1.5.1","depth":2,"path":"docs/advanced/CustomActions.md","ref":"docs/advanced/CustomActions.md","articles":[]},{"title":"Headers Override","level":"1.5.2","depth":2,"path":"docs/advanced/HeadersOverride.md","ref":"docs/advanced/HeadersOverride.md","articles":[]},{"title":"Assign Update Response","level":"1.5.3","depth":2,"path":"docs/advanced/AssignUpdateResponse.md","ref":"docs/advanced/AssignUpdateResponse.md","articles":[]},{"title":"Resource Combination","level":"1.5.4","depth":2,"path":"docs/advanced/ResourceCombination.md","ref":"docs/advanced/ResourceCombination.md","articles":[]},{"title":"Custom Promise","level":"1.5.5","depth":2,"path":"docs/advanced/CustomPromise.md","ref":"docs/advanced/CustomPromise.md","articles":[]},{"title":"Custom fetch","level":"1.5.6","depth":2,"path":"docs/advanced/CustomFetch.md","ref":"docs/advanced/CustomFetch.md","articles":[]}]},"previous":{"title":"Examples","level":"1.4","depth":1,"path":"docs/examples/README.md","ref":"docs/examples/README.md","articles":[{"title":"Actions","level":"1.4.1","depth":2,"path":"docs/examples/ActionsExamples.md","ref":"docs/examples/ActionsExamples.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/mgcrea/redux-rest-resource/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/mgcrea/redux-rest-resource/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Redux","gitbook":"3.2.2"},"file":{"path":"docs/examples/ActionsExamples.md","mtime":"2017-10-24T09:45:06.999Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-10-24T09:55:10.246Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>

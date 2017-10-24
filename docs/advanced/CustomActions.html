@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Resource Combination · Redux</title>
+        <title>Custom Actions · Redux</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="CustomPromise.html" />
+    <link rel="next" href="HeadersOverride.html" />
     
     
-    <link rel="prev" href="AssignUpdateResponse.html" />
+    <link rel="prev" href="./" />
     
 
     </head>
@@ -253,7 +253,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.5.1" data-path="CustomActions.html">
+        <li class="chapter active" data-level="1.5.1" data-path="CustomActions.html">
             
                 <a href="CustomActions.html">
             
@@ -292,7 +292,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5.4" data-path="ResourceCombination.html">
+        <li class="chapter " data-level="1.5.4" data-path="ResourceCombination.html">
             
                 <a href="ResourceCombination.html">
             
@@ -437,7 +437,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../.." >Resource Combination</a>
+        <a href="../.." >Custom Actions</a>
     </h1>
 </div>
 
@@ -452,32 +452,36 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="resource-combination">Resource Combination</h1>
-<p>You can easily combine multiple resources together. For instance, if you want to use children resources attached to a parent store node:</p>
-<pre class="language-"><code class="lang-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>createResource<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;redux-rest-resource&apos;</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> hostUrl <span class="token operator">=</span> <span class="token string">&apos;http://localhost:3000&apos;</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">// Parent Library Store</span>
-<span class="token keyword">const</span> libraryResource <span class="token operator">=</span> <span class="token function">createResource</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  name<span class="token punctuation">:</span> <span class="token string">&apos;library&apos;</span><span class="token punctuation">,</span>
-  pluralName<span class="token punctuation">:</span> <span class="token string">&apos;libraries&apos;</span><span class="token punctuation">,</span>
-  url<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>hostUrl<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/libraries/:id`</span></span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">// Children Library Asset Store</span>
-<span class="token keyword">const</span> libraryAssetResource <span class="token operator">=</span> <span class="token function">createResource</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  name<span class="token punctuation">:</span> <span class="token string">&apos;libraryAsset&apos;</span><span class="token punctuation">,</span>
-  url<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>hostUrl<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/libraries/:libraryId/assets/:id`</span></span>
+                                <h1 id="custom-actions">Custom Actions</h1>
+<ul>
+<li>You can configure custom actions:</li>
+</ul>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> url <span class="token operator">=</span> <span class="token string">&apos;https://foo.com/users/:id&apos;</span><span class="token punctuation">;</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>types<span class="token punctuation">,</span> actions<span class="token punctuation">,</span> reducers<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">createResource</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  name<span class="token punctuation">:</span> <span class="token string">&apos;user&apos;</span><span class="token punctuation">,</span>
+  url<span class="token punctuation">,</span>
+  actions<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    run<span class="token punctuation">:</span> <span class="token punctuation">{</span>method<span class="token punctuation">:</span> <span class="token string">&apos;POST&apos;</span><span class="token punctuation">,</span> gerundName<span class="token punctuation">:</span> <span class="token string">&apos;running&apos;</span><span class="token punctuation">,</span> url<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>url<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/run`</span></span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    merge<span class="token punctuation">:</span> <span class="token punctuation">{</span>method<span class="token punctuation">:</span> <span class="token string">&apos;POST&apos;</span><span class="token punctuation">,</span> isArray<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
-<p>Exported <code>types</code> and <code>actions</code> do expose unique keys that enables quick and easy merging.</p>
-<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> types <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token operator">...</span>libraryResource<span class="token punctuation">.</span>types<span class="token punctuation">,</span> <span class="token operator">...</span>libraryAssetResource<span class="token punctuation">.</span>types<span class="token punctuation">}</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> actions <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token operator">...</span>libraryResource<span class="token punctuation">.</span>actions<span class="token punctuation">,</span> <span class="token operator">...</span>libraryAssetResource<span class="token punctuation">.</span>actions<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<ul>
+<li>It will generate the following action creators:</li>
+</ul>
+<pre class="language-"><code class="lang-js"><span class="token comment" spellcheck="true">// Action creators available to interact with your REST resource</span>
+Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>actions<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token punctuation">[</span>
+  <span class="token string">&quot;runUser&quot;</span><span class="token punctuation">,</span>
+  <span class="token string">&quot;mergeUsers&quot;</span>
+<span class="token punctuation">]</span>
 </code></pre>
-<p>Reducers do require extra care:</p>
-<pre class="language-"><code class="lang-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>mergeReducers<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;redux-rest-resource&apos;</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> reducers <span class="token operator">=</span> <span class="token function">mergeReducers</span><span class="token punctuation">(</span>libraryResource<span class="token punctuation">.</span>reducers<span class="token punctuation">,</span> <span class="token punctuation">{</span>assets<span class="token punctuation">:</span> libraryAssetResource<span class="token punctuation">.</span>reducers<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-</code></pre>
-<p>Finally export an unified resource:</p>
-<pre class="language-"><code class="lang-js"><span class="token keyword">export</span> <span class="token punctuation">{</span>types<span class="token punctuation">,</span> actions<span class="token punctuation">,</span> reducers<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<ul>
+<li>And have the following state by default:</li>
+</ul>
+<pre class="language-"><code class="lang-js">state <span class="token operator">==</span> <span class="token punctuation">{</span>
+  isRunning<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+  isMerging<span class="token punctuation">:</span> <span class="token boolean">false</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
 </code></pre>
 
                                 
@@ -506,12 +510,12 @@
 
             
                 
-                <a href="AssignUpdateResponse.html" class="navigation navigation-prev " aria-label="Previous page: Assign Update Response">
+                <a href="./" class="navigation navigation-prev " aria-label="Previous page: Advanced">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="CustomPromise.html" class="navigation navigation-next " aria-label="Next page: Custom Promise">
+                <a href="HeadersOverride.html" class="navigation navigation-next " aria-label="Next page: Headers Override">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -522,7 +526,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Resource Combination","level":"1.5.4","depth":2,"next":{"title":"Custom Promise","level":"1.5.5","depth":2,"path":"docs/advanced/CustomPromise.md","ref":"docs/advanced/CustomPromise.md","articles":[]},"previous":{"title":"Assign Update Response","level":"1.5.3","depth":2,"path":"docs/advanced/AssignUpdateResponse.md","ref":"docs/advanced/AssignUpdateResponse.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/mgcrea/redux-rest-resource/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/mgcrea/redux-rest-resource/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Redux","gitbook":"3.2.2"},"file":{"path":"docs/advanced/ResourceCombination.md","mtime":"2016-04-25T23:19:56.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-10-24T09:55:10.246Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Custom Actions","level":"1.5.1","depth":2,"next":{"title":"Headers Override","level":"1.5.2","depth":2,"path":"docs/advanced/HeadersOverride.md","ref":"docs/advanced/HeadersOverride.md","articles":[]},"previous":{"title":"Advanced","level":"1.5","depth":1,"path":"docs/advanced/README.md","ref":"docs/advanced/README.md","articles":[{"title":"Custom Actions","level":"1.5.1","depth":2,"path":"docs/advanced/CustomActions.md","ref":"docs/advanced/CustomActions.md","articles":[]},{"title":"Headers Override","level":"1.5.2","depth":2,"path":"docs/advanced/HeadersOverride.md","ref":"docs/advanced/HeadersOverride.md","articles":[]},{"title":"Assign Update Response","level":"1.5.3","depth":2,"path":"docs/advanced/AssignUpdateResponse.md","ref":"docs/advanced/AssignUpdateResponse.md","articles":[]},{"title":"Resource Combination","level":"1.5.4","depth":2,"path":"docs/advanced/ResourceCombination.md","ref":"docs/advanced/ResourceCombination.md","articles":[]},{"title":"Custom Promise","level":"1.5.5","depth":2,"path":"docs/advanced/CustomPromise.md","ref":"docs/advanced/CustomPromise.md","articles":[]},{"title":"Custom fetch","level":"1.5.6","depth":2,"path":"docs/advanced/CustomFetch.md","ref":"docs/advanced/CustomFetch.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/mgcrea/redux-rest-resource/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/mgcrea/redux-rest-resource/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Redux","gitbook":"3.2.2"},"file":{"path":"docs/advanced/CustomActions.md","mtime":"2017-10-24T08:52:05.293Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-10-24T09:55:10.246Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
