@@ -1,6 +1,6 @@
 import {initialState} from './../defaults';
 import {getTypesScope} from './../types';
-import {getGerundName, ucfirst} from './../helpers/util';
+import {getGerundName, isFunction, ucfirst} from './../helpers/util';
 
 const defaultReducers = {
   create: (state, action) => {
@@ -146,11 +146,19 @@ const defaultReducers = {
 
 
 const createReducer = (actionId, {resourceName, resourcePluralName = `${resourceName}s`, ...actionOpts}) => {
+  // Custom reducers
+  if (actionOpts.reduce && isFunction(actionOpts.reduce)) {
+    return actionOpts.reduce;
+  }
+  // Do require a custom reduce function for pure actions
+  if (actionOpts.isPure) {
+    throw new Error(`Missing \`reduce\` option for pure action \`${actionId}\``);
+  }
   // Default reducers
   if (defaultReducers[actionId]) {
     return defaultReducers[actionId];
   }
-  // Custom reducers
+  // Custom actions
   const gerundName = actionOpts.gerundName || getGerundName(actionId);
   const gerundStateKey = `is${ucfirst(gerundName)}`;
   return (state, action) => {
@@ -193,11 +201,11 @@ const createRootReducer = (
     ...globalOpts
   } = {}
 ) => {
-  const scopeNamespace = `${scope}/`;
+  const scopeNamespace = scope ? `${scope}/` : '';
   const reducers = givenReducers || createReducers(actions, {resourceName, resourcePluralName, ...globalOpts});
   const rootReducer = (state = {...initialState}, action) => {
     // Only process relevant namespace
-    if (!String(action.type).startsWith(scopeNamespace)) {
+    if (scopeNamespace && !String(action.type).startsWith(scopeNamespace)) {
       return state;
     }
     // Only process relevant action type
